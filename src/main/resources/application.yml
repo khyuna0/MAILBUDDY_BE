@@ -1,2 +1,55 @@
 server:
-  port: 8888
+  port: ${SERVER_PORT:8888}
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/mailbuddy?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:dummy-local-google-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:dummy-local-google-client-secret}
+            scope:
+              - email
+              - profile
+              - https://www.googleapis.com/auth/gmail.readonly
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:dummy-local@example.com}
+    password: ${MAIL_PASSWORD:dummy-local-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD:local-dev-jasypt-password}
+
+mistral:
+  api:
+    key: ${MISTRAL_API_KEY:dummy-local-mistral-api-key}
+    url: ${MISTRAL_API_URL:https://api.mistral.ai/v1/chat/completions}
+    model: ${MISTRAL_API_MODEL:mistral-small-latest}
